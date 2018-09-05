@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="renderer" content="webkit"/>
+<title>首页</title>
+</head>
+<body>
+    <p sec:authorize="hasRole('ROLE_ADMIN')" style="color:red">
+       ROLE_ADMIN角色才能看到的。
+    </p>
+    -----------------------------------------------------------
+    <p sec:authorize="hasRole('ROLE_USER')" style="color:green">
+        ROLE_USER角色才能看到的。
+    </p>
+    -----------------------------------------------------------
+    <p>用户所拥有的角色：<span th:text="${session.roles}"></span></p>
+    -----------------------------------------------------------
+    <p>角色所拥有的资源：</p>
+    <table border="0">
+		<tr th:each="resource : ${resourceList}">
+			<td th:text="${resource.name}"/>
+		</tr>
+	</table>
+	-----------------------------------------------------------
+</body>
+</html>
