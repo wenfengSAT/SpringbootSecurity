@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.security.security.entity.UserEntity;
+import com.security.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	

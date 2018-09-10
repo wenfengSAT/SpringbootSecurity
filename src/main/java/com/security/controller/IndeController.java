@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,10 +19,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.security.entity.ResourceEntity;
+import com.security.entity.RoleEntity;
+import com.security.entity.UserEntity;
 import com.security.repository.UserRepository;
-import com.security.security.entity.ResourceEntity;
-import com.security.security.entity.RoleEntity;
-import com.security.security.entity.UserEntity;
 
 /**
  * 
@@ -31,6 +33,8 @@ import com.security.security.entity.UserEntity;
  */
 @Controller
 public class IndeController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(IndeController.class);
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -54,9 +58,9 @@ public class IndeController {
 		}
 		roles = roles.substring(0, roles.length() - 1);
 		request.getSession().setAttribute("roles", roles);
-		System.out.println("====================="+roles);
+		LOGGER.debug("====================="+roles);
 		for(ResourceEntity r: resourceList) {
-			System.out.println(r.getName());
+			LOGGER.debug(r.getName());
 		}
 		model.addAttribute("resourceList", resourceList);
 		// request.getSession().setMaxInactiveInterval(5);// 设置session超时时间5秒
@@ -68,8 +72,6 @@ public class IndeController {
     	Page<UserEntity> r = userRepository.findAll(pageable);
     	result.put("rows", r.getContent());
     	result.put("total", r.getTotalElements());
-    	System.out.println(r.getContent());
-    	System.out.println(r.getTotalElements());
 		return "main";
 	}
 }

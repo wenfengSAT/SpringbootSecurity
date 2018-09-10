@@ -6,14 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.security.entity.UserEntity;
 import com.security.repository.UserRepository;
-import com.security.security.entity.UserEntity;
 
 /**
  * 
@@ -23,7 +29,7 @@ import com.security.security.entity.UserEntity;
  *
  */
 @Component
-public class MyauthenticationProvider implements AuthenticationProvider {
+public class MyauthenticationProvider extends UserDetailsServiceImpl implements AuthenticationProvider{
 
 	@Autowired
 	UserRepository userRepository;
@@ -32,8 +38,8 @@ public class MyauthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private RolePermissionDao rolePermissionDao;*/
 
-	//@Autowired
-	//private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * Description:登录认证
@@ -48,8 +54,18 @@ public class MyauthenticationProvider implements AuthenticationProvider {
 		String userName = authentication.getName();
 		String passWord = (String) authentication.getCredentials();
 		UserEntity user = userRepository.findByUsername(userName);
+		/**
+		 *  UsernameNotFoundException 用户找不到
+			BadCredentialsException 坏的凭据
+			AccountStatusException 用户状态异常它包含如下子类
+			AccountExpiredException 账户过期
+			LockedException 账户锁定
+			DisabledException 账户不可用
+			CredentialsExpiredException 证书过期
+		 */
 		if (user == null) {
-			throw new BadCredentialsException("用户不存在！");
+			System.out.println("用户不存在！");
+			throw new UsernameNotFoundException("用户不存在！");
 		}
 
 		// 加密过程在这里体现,matches(CharSequence rawPassword, String encodedPassword)
@@ -58,15 +74,16 @@ public class MyauthenticationProvider implements AuthenticationProvider {
 		}*/
 		
 		if (!user.getPassword().equals(passWord)) {
+			System.out.println("密码错误！");
 			throw new BadCredentialsException("密码错误！");
 		}
 
 		if (status.equals("2")) {
-			throw new BadCredentialsException("账号不可用，请联系系统管理员！");
+			throw new DisabledException("账号不可用，请联系系统管理员！");
 		}
 
 		if (status.equals("3")) {
-			throw new BadCredentialsException("账号已锁定，请联系系统管理员！");
+			throw new LockedException("账号已锁定，请联系系统管理员！");
 		}
 
 		MyUserDetails myUserDetails = new MyUserDetails();
@@ -88,6 +105,5 @@ public class MyauthenticationProvider implements AuthenticationProvider {
 	public boolean supports(Class<?> arg0) {
 		return true;
 	}
-
 
 }

@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.security.security.entity.UserEntity;
+import com.security.entity.UserEntity;
 
 
 /**

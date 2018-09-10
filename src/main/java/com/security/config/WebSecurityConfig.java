@@ -3,6 +3,8 @@ package com.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -61,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/main")//登陆成功之后跳转的页面
 				// 自定义登录界面
 				.loginPage("/login").failureUrl("/login?error").permitAll()
-				.and().logout().permitAll()// 注销请求可直接访问
+				.and().logout().logoutSuccessUrl("/login").permitAll()// 注销请求可直接访问
 				// 启用 remember me
 				.and().rememberMe().key(KEY)
 				// 处理异常，拒绝访问就重定向到 403 页面
@@ -80,11 +82,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // 将验证过程交给自定义验证工具
         auth.authenticationProvider(myauthenticationProvider);
-
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+    
 }
