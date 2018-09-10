@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// 都可以访问
-				.antMatchers("/static/**","/css/**", "/js/**", "/fonts/**", "/img/**").permitAll()
+				.antMatchers("/static/**","/css/**", "/js/**", "/fonts/**", "/img/**","/OAuth/callback/getOAuth","/OAuth/authLogin").permitAll()
 				// 需要相应的角色才能访问
 				//.antMatchers("/admin/**").hasRole("ADMIN")
 				.and()

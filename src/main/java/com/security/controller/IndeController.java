@@ -1,5 +1,6 @@
 package com.security.controller;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,11 +8,16 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.security.repository.UserRepository;
 import com.security.security.entity.ResourceEntity;
 import com.security.security.entity.RoleEntity;
 import com.security.security.entity.UserEntity;
@@ -25,6 +31,9 @@ import com.security.security.entity.UserEntity;
  */
 @Controller
 public class IndeController {
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	/**
 	 * 
@@ -51,6 +60,16 @@ public class IndeController {
 		}
 		model.addAttribute("resourceList", resourceList);
 		// request.getSession().setMaxInactiveInterval(5);// 设置session超时时间5秒
+		
+		HashMap<String,Object> result = new HashMap<String,Object>();
+		int pageNumber = 1;
+		int pageSize = 10;
+		Pageable pageable = new PageRequest(pageNumber-1,pageSize);
+    	Page<UserEntity> r = userRepository.findAll(pageable);
+    	result.put("rows", r.getContent());
+    	result.put("total", r.getTotalElements());
+    	System.out.println(r.getContent());
+    	System.out.println(r.getTotalElements());
 		return "main";
 	}
 }
