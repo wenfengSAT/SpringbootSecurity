@@ -10,6 +10,31 @@
 </head>
 <body>
     <p style="color:red">从Github上获取的用户信息：</p>
-    <span th:text="${user}"></span>
+    <p th:text="${user}"></p>
+    -----------------------------------------------------------
+    <p>
+		<h2><a href="/logout">退出登录</a></h2>
+	</p>
+    <p sec:authorize="hasRole('ROLE_ADMIN')" style="color:red">
+       ROLE_ADMIN角色才能看到的。
+    </p>
+    -----------------------------------------------------------
+    <p sec:authorize="hasRole('ROLE_USER')" style="color:green">
+        ROLE_USER角色才能看到的。
+    </p>
+    -----------------------------------------------------------
+    <p>用户所拥有的角色：<span th:text="${session.roles}"></span></p>
+    -----------------------------------------------------------
+    <p>角色所拥有的资源：</p>
+	<ul th:each="resource : ${resourceList}">
+		<li th:text="${resource.name}"/>
+		<li>
+			<ul th:each="r : ${resource.children}" th:if="${resource.children.size()>0}">
+				&nbsp;<li th:text="${r.name}">
+				</li>
+			</ul>
+		</li>
+	</ul>
+	-----------------------------------------------------------
 </body>
 </html>

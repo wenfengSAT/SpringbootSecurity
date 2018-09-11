@@ -2,7 +2,9 @@
 - 执行docs/sql/init.sql文件，初始化数据
 - 运行Application类
 - 项目访问路径：http://localhost:8080/
-- 账号密码：admin/123456
+- 账号密码：
+admin/123456
+test/123456
 
-![image](https://github.com/wenfengSAT/SpringbootCRM/blob/master/docs/img/15357025821.jpg)
+
 

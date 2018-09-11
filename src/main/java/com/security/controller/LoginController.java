@@ -39,14 +39,13 @@ public class LoginController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/doLogout", method = RequestMethod.GET)
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	@ResponseBody
 	public String doLogoutLog(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
-
 		return "login";
 	}
 

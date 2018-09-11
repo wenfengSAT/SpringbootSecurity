@@ -1,5 +1,6 @@
 package com.security.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import com.security.entity.ResourceEntity;
 import com.security.entity.RoleEntity;
 import com.security.entity.UserEntity;
 import com.security.repository.UserRepository;
+import com.security.util.ResourceUtil;
 
 /**
  * 
@@ -62,7 +64,8 @@ public class IndeController {
 		for(ResourceEntity r: resourceList) {
 			LOGGER.debug(r.getName());
 		}
-		model.addAttribute("resourceList", resourceList);
+		System.out.println(ResourceUtil.format(new ArrayList<>(resourceList)));
+		model.addAttribute("resourceList", ResourceUtil.format(new ArrayList<>(resourceList)));
 		// request.getSession().setMaxInactiveInterval(5);// 设置session超时时间5秒
 		
 		HashMap<String,Object> result = new HashMap<String,Object>();

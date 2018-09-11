@@ -7,8 +7,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="renderer" content="webkit"/>
 <title>首页</title>
+<style type="text/css">
+ul li{
+list-style-type:none; 
+}
+</style>
 </head>
 <body>
+	<p>
+		<h2><a href="/logout">退出登录</a></h2>
+	</p>
     <p sec:authorize="hasRole('ROLE_ADMIN')" style="color:red">
        ROLE_ADMIN角色才能看到的。
     </p>
@@ -20,11 +28,15 @@
     <p>用户所拥有的角色：<span th:text="${session.roles}"></span></p>
     -----------------------------------------------------------
     <p>角色所拥有的资源：</p>
-    <table border="0">
-		<tr th:each="resource : ${resourceList}">
-			<td th:text="${resource.name}"/>
-		</tr>
-	</table>
+	<ul th:each="resource : ${resourceList}">
+		<li th:text="${resource.name}"/>
+		<li>
+			<ul th:each="r : ${resource.children}" th:if="${resource.children.size()>0}">
+				&nbsp;<li th:text="${r.name}">
+				</li>
+			</ul>
+		</li>
+	</ul>
 	-----------------------------------------------------------
 </body>
 </html>
