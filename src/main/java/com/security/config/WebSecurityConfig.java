@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,6 +75,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 		http.csrf().disable().authorizeRequests().anyRequest().authenticated();// 所有请求必须登陆后访问
 	}
+	
+	@Override
+    public void configure(WebSecurity web) throws Exception {
+        //ignore
+        web.ignoring().antMatchers("/OAuth/weixin/validate");
+    }
+
 	
 	/**
      * @Description: 用户登录认证

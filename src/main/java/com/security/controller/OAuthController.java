@@ -56,7 +56,8 @@ public class OAuthController {
 	 * https://github.com/login/oauth/access_token?client_id=xxxxxxxxxxxxxxxxxxx&client_secret=xxxxxxxxxxxxxxxxx&code=xxxxxxxxxxxxxxxxxxx
 	 * 这样就会返回access_token,如下
 	 * access_token=xxxxxxxxxxxxxxxxxxxxxxxxx&scope=public_repo%2
-	 * Cuser&token_type=bearer 4. 这样我们就可以用这个access_token来获取用户的信息
+	 * Cuser&token_type=bearer 
+	 * 4. 这样我们就可以用这个access_token来获取用户的信息
 	 * https://api.github.com/user?access_token=xxxxxxxxxxxxxxxxxxxxxxxxx
 	 * 
 	 */
